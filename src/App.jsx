@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
 
 /* ==== EDIT THESE TWO LINES WHEN READY ==== */
-const CA = "COMING SOON";        // paste your contract address here
+const CA = "0xa5a0cdfd9a996e32ea707f914c1ebc0b5bbd9ff4";        // paste your contract address here
 const TWITTER_URL = "https://x.com/FartHoodETH";          // paste your twitter/X link here later
 
 /* ============================================================
