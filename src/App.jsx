@@ -3,7 +3,7 @@ import "./App.css";
 
 /* ==== EDIT THESE TWO LINES WHEN READY ==== */
 const CA = "COMING SOON";        // paste your contract address here
-const TWITTER_URL = "";          // paste your twitter/X link here later
+const TWITTER_URL = "https://x.com/FartHoodETH";          // paste your twitter/X link here later
 
 /* ============================================================
    FART HOOD OS v3.0 — ASCII CRT TERMINAL
