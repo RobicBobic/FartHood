@@ -12,32 +12,6 @@ const TWITTER_URL = "";          // paste your twitter/X link here later
    rank system, guessing game, matrix rain.
    ============================================================ */
 
-const ROBIN = String.raw`
-                          __
-                     ,   /  \_
-                    /|  / /\  \   }}
-                   / | /_/  \  \ }}}}
-                  /  |     .----' }}
-                 |   |    .------.
-                 |   |    | o  o |
-                 |   |    |  ..  |
-                 |   |  .-'------'-.
-    <=====+======#===##(   .--.    )
-                 |   |  \  |  |   /
-                 |   |   \ |  |  /
-                  \  |   / '--'  \ 
-                   \ |  |  |  |   |
-                    \|  |--====--|
-                     '  |  |  |  |
-                        |  |  |  |
-                        |  '--'  |
-                       /|   ||   |\ 
-                      | |   ||   | |
-                      '-'  _||_  '-'
-                          (_||_)
-                         (__)(__)
-`;
-
 const BANNER = String.raw`
 ███████╗ █████╗ ██████╗ ████████╗    ██╗  ██╗ ██████╗  ██████╗ ██████╗
 ██╔════╝██╔══██╗██╔══██╗╚══██╔══╝    ██║  ██║██╔═══██╗██╔═══██╗██╔══██╗
@@ -307,6 +281,51 @@ function MatrixRain({ color }) {
 }
 
 /* ============================================================ */
+
+
+/* ---------- decorative CRT sparkles down the side margins ---------- */
+const STAR_GLYPHS = ["+", "*", "\u00b7", "\u2727", "\u22c6"];
+const SIDE_STARS = (() => {
+  const seeded = [];
+  const cols = { left: [1.2, 3.2, 5.5, 2.4, 4.6], right: [94.5, 96.6, 92.8, 95.4, 97.2] };
+  let k = 0;
+  ["left", "right"].forEach((side) => {
+    for (let i = 0; i < 14; i++) {
+      const xs = cols[side];
+      seeded.push({
+        id: `st${k++}`,
+        left: xs[i % xs.length] + (Math.random() * 2 - 1),
+        top: 3 + Math.random() * 94,
+        glyph: STAR_GLYPHS[Math.floor(Math.random() * STAR_GLYPHS.length)],
+        size: 12 + Math.random() * 12,
+        delay: (Math.random() * 4).toFixed(2),
+        dim: Math.random() > 0.5,
+      });
+    }
+  });
+  return seeded;
+})();
+
+function SideStars() {
+  return (
+    <div className="stars" aria-hidden="true">
+      {SIDE_STARS.map((s) => (
+        <span
+          key={s.id}
+          className={`star${s.dim ? " dim" : ""}`}
+          style={{
+            left: `${s.left}%`,
+            top: `${s.top}%`,
+            fontSize: `${s.size}px`,
+            animationDelay: `${s.delay}s`,
+          }}
+        >
+          {s.glyph}
+        </span>
+      ))}
+    </div>
+  );
+}
 
 export default function App() {
   const [lines, setLines] = useState([]);
@@ -686,7 +705,7 @@ export default function App() {
       }
 
       case "robin":
-        out.push(L(ROBIN, "banner-line"), L("he steals from the rich and gives to the wind.", "dim"), L(""));
+        out.push(L("he stands watch on the right. steals from the rich, gives to the wind.", "dim"), L(""));
         break;
 
       case "cowsay":
@@ -803,7 +822,9 @@ export default function App() {
       <div className="boot-flash" aria-hidden="true" />
       <div className="flicker-layer" aria-hidden="true" />
       {matrixOn && <MatrixRain color={phosColor} />}
-      <pre className="robin" aria-hidden="true">{ROBIN}</pre>
+      <img className="robin" src="/robin.png" alt="Robin Hood" aria-hidden="true" />
+      <img className="fart" src="/fart.png" alt="" aria-hidden="true" />
+      <SideStars />
 
       <div className="hdr">
         <span className="title">░ FARTHOOD OS v3.0 ░</span>

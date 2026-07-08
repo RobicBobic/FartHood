@@ -86,6 +86,8 @@ body { background: var(--void); overflow: hidden; }
 
 /* ============ top header bar ============ */
 .hdr {
+  position: relative;
+  z-index: 3;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -106,6 +108,8 @@ body { background: var(--void); overflow: hidden; }
 
 /* ============ output area ============ */
 .screen {
+  position: relative;
+  z-index: 3;
   flex: 1;
   overflow-y: auto;
   scrollbar-width: none;
@@ -137,6 +141,8 @@ body { background: var(--void); overflow: hidden; }
 
 /* ============ grouped command buttons ============ */
 .btn-panel {
+  position: relative;
+  z-index: 3;
   border-top: 1px dashed var(--phos-dark);
   padding-top: 8px;
   display: flex;
@@ -190,6 +196,8 @@ body { background: var(--void); overflow: hidden; }
 
 /* ============ input row ============ */
 .input-row {
+  position: relative;
+  z-index: 3;
   display: flex;
   align-items: baseline;
   gap: 10px;
@@ -213,6 +221,8 @@ body { background: var(--void); overflow: hidden; }
 
 /* ============ status strip ============ */
 .strip {
+  position: relative;
+  z-index: 3;
   display: flex;
   justify-content: space-between;
   gap: 16px;
@@ -250,32 +260,76 @@ body { background: var(--void); overflow: hidden; }
   100% { opacity: 0; transform: scaleY(1); }
 }
 
+/* ============ side sparkles ============ */
+.stars {
+  position: fixed;
+  inset: 0;
+  z-index: 2;               /* above bg images, below terminal text */
+  pointer-events: none;
+}
+
+.star {
+  position: fixed;
+  color: var(--phos);
+  font-family: var(--font-term);
+  text-shadow: 0 0 6px var(--phos-glow);
+  opacity: 0.85;
+  transform: translate(-50%, -50%);
+  animation: twinkle 3.5s ease-in-out infinite;
+}
+
+.star.dim { opacity: 0.4; }
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.9; }
+}
+
+/* hide sparkles when the margins collapse (matches robin/fart) */
+@media (max-width: 1149px) {
+  .stars { display: none; }
+}
+
 /* ============ robin hood watermark (right side) ============ */
 .robin {
   position: fixed;
-  right: 40px;
-  top: 50%;
-  transform: translateY(-52%);
-  z-index: 4;
+  right: -40px;              /* push him into the far-right margin */
+  bottom: 40px;
+  z-index: 1;                /* behind the terminal text */
   pointer-events: none;
   user-select: none;
-  font-family: var(--font-term);
-  font-size: 15px;
-  line-height: 1.02;
-  white-space: pre;
-  color: var(--phos-dim);
-  text-shadow: 0 0 6px var(--phos-glow), 0 0 20px rgba(204,255,0,0.2);
-  opacity: 0.9;
+  height: 70vh;              /* a bit smaller so he clears the frame */
+  max-height: 720px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.5;
+  mix-blend-mode: screen;    /* black bg drops out on black */
+}
+
+.fart {
+  position: fixed;
+  left: -40px;               /* into the far-left margin */
+  top: 50%;
+  transform: translateY(-50%);  /* vertically centered */
+  z-index: 1;                /* behind the terminal text */
+  pointer-events: none;
+  user-select: none;
+  height: 55vh;              /* bigger */
+  max-height: 560px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.5;
+  mix-blend-mode: screen;    /* black bg drops out on black */
 }
 
 /* reserve the right column for him on wide screens */
 @media (min-width: 1150px) {
-  .screen { padding-right: 380px; }
+  .screen { padding-right: 340px; }
 }
 
 /* hide him when space runs out so text stays readable */
 @media (max-width: 1149px) {
-  .robin { display: none; }
+  .robin, .fart { display: none; }
 }
 
 /* ============ CA chip + twitter button ============ */
@@ -338,4 +392,5 @@ body { background: var(--void); overflow: hidden; }
   .flicker-layer, .boot-flash { animation: none; opacity: 0; }
   .matrix-canvas { display: none; }
   .crt.shake { animation: none; }
+  .star { animation: none; opacity: 0.6; }
 }
